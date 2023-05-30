@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Space Invaders</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      background: #000;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="480" height="320"></canvas>
+  <script>
+    // Game variables
+    var canvas = document.getElementById("gameCanvas");
+    var ctx = canvas.getContext("2d");
+
+    // Player variables
+    var playerWidth = 20;
+    var playerHeight = 20;
+    var playerX = (canvas.width - playerWidth) / 2;
+    var playerY = canvas.height - playerHeight;
+
+    // Keyboard state
+    var leftPressed = false;
+    var rightPressed = false;
+
+    // Event listeners for keyboard input
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    function keyDownHandler(event) {
+      if (event.keyCode === 37) {
+        leftPressed = true;
+      } else if (event.keyCode === 39) {
+        rightPressed = true;
+      }
+    }
+
+    function keyUpHandler(event) {
+      if (event.keyCode === 37) {
+        leftPressed = false;
+      } else if (event.keyCode === 39) {
+        rightPressed = false;
+      }
+    }
+
+    function drawPlayer() {
+      ctx.beginPath();
+      ctx.rect(playerX, playerY, playerWidth, playerHeight);
+      ctx.fillStyle = "#00ff00";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+
+      if (leftPressed && playerX > 0) {
+        playerX -= 5;
+      } else if (rightPressed && playerX < canvas.width - playerWidth) {
+        playerX += 5;
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+</body>
+</html>
